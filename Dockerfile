@@ -31,7 +31,7 @@ RUN make install
 
 CMD /bin/sh
 
-## run ircd-irc2
+# run ircd-irc2
 FROM alpine:3.9
 
 # metadata
