@@ -20,7 +20,7 @@ jobs:
       uses: docker/login-action@v1
       with: 
         username: ${{ github.DOCKERHUB_USERNAME }}
-        password: ${{ github.DOCKERHUB_PASSWORD }}
+        password: ${{ github.DOCKERHUB_TOKEN }}
     
     - name: Build and push to Docker Hub
       uses: docker/build-push-action@v2
