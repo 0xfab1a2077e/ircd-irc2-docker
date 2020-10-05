@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+      - releases/v*
+      - test # temp for testing
+
+jobs:
+  dockerhub:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-20.04
+          - ubuntu-18.04
+          - ubuntu-16.04
+        logout:
+          - true
+          - false
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2.3.2
+      -
+        name: Login to DockerHub
+        uses: ./
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          logout: ${{ matrix.logout }}
+      -
+        name: Clear
+        if: always()
+        run: |
+          rm -f ${HOME}/.docker/config.json
