@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login to Docker Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Get the version
+      id: vars
+      run: echo ::set-output name=tag::$(date +%y.%m%H.%m%S)
+    - name: Build the tagged Docker image
+      run: docker build . --file Dockerfile --tag ircd-irc2:${{steps.vars.outputs.tag}}
+    - name: Push the tagged Docker image
+      run: docker push ircd-irc2:${{steps.vars.outputs.tag}}
+    - name: Build the latest Docker image
+      run: docker build . --file Dockerfile --tag ircd-irc2:latest
+    - name: Push the latest Docker image
+      run: docker push ircd-irc2:latest
