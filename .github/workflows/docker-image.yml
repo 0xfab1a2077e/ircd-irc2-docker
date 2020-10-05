@@ -18,7 +18,7 @@ jobs:
     - name: Push to Docker Hub
       uses: docker/build-push-action@v1
       with: 
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-        repository: ${{ secrets.DOCKERHUB_REPONAME }}
+        username: ${{ github.DOCKERHUB_USERNAME }}
+        password: ${{ github.DOCKERHUB_PASSWORD }}
+        repository: ${{ github.DOCKERHUB_REPONAME }}
         tag_with_ref: true
